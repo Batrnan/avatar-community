@@ -1,16 +1,36 @@
+import EmailInput from '@/components/EmailInput';
 import FixedBottonCTA from '@/components/FixedBottonCTA';
-import InputField from '@/components/InputField';
+import PasswordInput from '@/components/PasswordInput';
+import { FormProvider, useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 
-export default function LoginScreen() {
+type FormValues = {
+  email: string;
+  password: string;
+};
+export default function Logincreen() {
+  const loginForm = useForm<FormValues>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit = (formValues: FormValues) => {
+    console.log('formV', formValues);
+  };
+
   return (
-    <>
+    <FormProvider {...loginForm}>
       <View style={styles.container}>
-        <InputField label="이메일" placeholder="이메일을 입력해주세요." />
-        <InputField label="비밀번호" placeholder="비밀번호를 입력해주세요." />
+        <EmailInput />
+        <PasswordInput />
       </View>
-      <FixedBottonCTA label="로그인하기" onPress={() => {}} />
-    </>
+      <FixedBottonCTA
+        label="로그인하기"
+        onPress={loginForm.handleSubmit(onSubmit)}
+      />
+    </FormProvider>
   );
 }
 
